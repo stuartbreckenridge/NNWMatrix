@@ -36,9 +36,14 @@
 	50%, 100% { opacity: 0; }
 }
 
-@keyframes typewriter {
-	from { clip-path: inset(0 100% 0 0); }
-	to   { clip-path: inset(0 0% 0 0); }
+@keyframes twCharAppear {
+	to { opacity: 1; }
+}
+
+/* Injected by typewriter script — one span per character */
+.tw-char {
+	opacity: 0;
+	animation: twCharAppear 1ms forwards;
 }
 
 @keyframes bootIn {
@@ -82,6 +87,7 @@ html::after {
 
 html {
 	scroll-behavior: smooth;
+	background: var(--bg);
 }
 
 body {
@@ -111,7 +117,7 @@ a:hover {
    -------------------------------------------------------------------------- */
 
 .headerContainer {
-	background: var(--surface);
+	/* background: var(--surface); */
 	border-bottom: 1px solid var(--border-bright);
 	box-shadow: 0 1px 0 var(--green-glow);
 }
@@ -166,7 +172,6 @@ body .header a:link,
 .avatar img,
 .feedIcon {
 	border-radius: 0;
-	border: 1px solid var(--border-bright);
 	box-shadow: 0 0 6px var(--green-glow);
 	image-rendering: pixelated;
 	filter: saturate(0) brightness(0.8) sepia(1) hue-rotate(90deg) saturate(2);
@@ -226,7 +231,9 @@ article {
 	font-size: 0.85em;
 	color: var(--green);
 	text-shadow: var(--glow-text);
-	animation: blink 1s step-end infinite;
+	/* delay set dynamically via --typewriter-cursor-delay by the typewriter script */
+	opacity: 0;
+	animation: blink 1s step-end var(--typewriter-cursor-delay, 9999s) infinite;
 }
 
 .articleDateline {
@@ -523,15 +530,6 @@ object {
 	height: auto;
 }
 
-/* Images with no width OR height attributes inside running text are
-   inline icons — clamp them to the current line height */
-.articleBody p img:not([width]):not([height]),
-.articleBody li img:not([width]):not([height]),
-.articleBody td img:not([width]):not([height]) {
-	height: 1em;
-	width: auto;
-	vertical-align: middle;
-}
 
 
 img {

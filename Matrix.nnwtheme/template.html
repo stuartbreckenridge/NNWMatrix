@@ -45,3 +45,28 @@ body: The body of the article.
 <div class="externalLink">[[external_link_label]] <a href="[[external_link]]">[[external_link_stripped]]</a></div>
 <div id="bodyContainer" class="articleBody [[text_size_class]]">[[body]]</div>
 </article>
+
+<script>
+(function () {
+	var h1 = document.querySelector('.articleTitle h1');
+	if (!h1) return;
+	var link = h1.querySelector('a') || h1;
+	var text = link.textContent;
+	link.textContent = '';
+
+	var startDelay = 0.75; // seconds — after bootIn completes
+	var charDelay  = 0.04; // seconds per character
+
+	text.split('').forEach(function (ch, i) {
+		var span = document.createElement('span');
+		span.textContent = ch;
+		span.className = 'tw-char';
+		span.style.animationDelay = (startDelay + i * charDelay) + 's';
+		link.appendChild(span);
+	});
+
+	// tell the ::after cursor when to start blinking
+	h1.style.setProperty('--typewriter-cursor-delay',
+		(startDelay + text.length * charDelay) + 's');
+}());
+</script>

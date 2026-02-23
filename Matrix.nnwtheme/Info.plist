@@ -13,8 +13,8 @@
 	<key>Version</key>
 	<integer>1</integer>
 	<key>RequiresJavascript</key>
-	<false/>
+	<true/>
 	<key>AgentUsage</key>
-	<string>Developed with Claude Agent</string>
+	<string>Developed with the help of Claude Agent</string>
 </dict>
 </plist>
