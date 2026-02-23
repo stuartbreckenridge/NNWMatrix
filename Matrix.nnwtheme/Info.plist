@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Matrix</string>
+	<key>ThemeIdentifier</key>
+	<string>net.stuartbreckenridge.matrix</string>
+	<key>CreatorHomePage</key>
+	<string>https://stuartbreckenridge.net</string>
+	<key>CreatorName</key>
+	<string>Stuart Breckenridge</string>
+	<key>Version</key>
+	<integer>1</integer>
+	<key>RequiresJavascript</key>
+	<false/>
+	<key>AgentUsage</key>
+	<string>Developed with Claude Agent</string>
+</dict>
+</plist>

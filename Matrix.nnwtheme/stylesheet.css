@@ -1,0 +1,819 @@
+/* Shared iOS and macOS CSS rules. Platform specific rules are at the bottom of this file. */
+
+/* --------------------------------------------------------------------------
+   Terminal Theme — custom properties
+   -------------------------------------------------------------------------- */
+
+:root {
+	color-scheme: dark;
+
+	--bg:              #0a0f0a;
+	--surface:         #0d130d;
+	--green:           #39ff6e;
+	--green-dim:       #1a8c3a;
+	--green-faint:     rgba(57, 255, 110, 0.07);
+	--green-glow:      rgba(57, 255, 110, 0.18);
+	--amber:           #ffb347;
+	--red:             #ff4444;
+	--text:            #b8f0c8;
+	--text-muted:      #4d8c5e;
+	--border:          #1a3d22;
+	--border-bright:   #2a6635;
+	--cursor:          #39ff6e;
+--font-mono:       "SF Mono", "Fira Code", "Fira Mono", Menlo, "Courier New", monospace;
+	--radius:          2px;
+	--header-table-border-color: #1a3d22;
+	--glow-text:       0 0 8px rgba(57, 255, 110, 0.6), 0 0 20px rgba(57, 255, 110, 0.2);
+	--glow-strong:     0 0 12px rgba(57, 255, 110, 0.9), 0 0 30px rgba(57, 255, 110, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   Animations
+   -------------------------------------------------------------------------- */
+
+@keyframes blink {
+	0%, 49%  { opacity: 1; }
+	50%, 100% { opacity: 0; }
+}
+
+@keyframes typewriter {
+	from { clip-path: inset(0 100% 0 0); }
+	to   { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes bootIn {
+	0%   { opacity: 0; }
+	10%  { opacity: 0.6; }
+	15%  { opacity: 0.1; }
+	20%  { opacity: 0.8; }
+	25%  { opacity: 0.3; }
+	30%  { opacity: 1; }
+	100% { opacity: 1; }
+}
+
+
+@keyframes cursorPulse {
+	0%, 100% { text-shadow: var(--glow-text); }
+	50%      { text-shadow: var(--glow-strong); }
+}
+
+/* --------------------------------------------------------------------------
+   CRT vignette
+   -------------------------------------------------------------------------- */
+
+html::after {
+	content: '';
+	display: block;
+	position: fixed;
+	inset: 0;
+	background: radial-gradient(
+		ellipse at center,
+		transparent 60%,
+		rgba(0,0,0,0.55) 100%
+	);
+	pointer-events: none;
+	z-index: 9001;
+}
+
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 44em;
+	background: var(--bg);
+	color: var(--text);
+	font-family: var(--font-mono);
+	word-wrap: break-word;
+	animation: bootIn 0.6s ease-out both;
+}
+
+a {
+	text-decoration: none;
+	color: var(--green);
+}
+
+a:hover {
+	text-decoration: none;
+	color: #fff;
+	text-shadow: var(--glow-strong);
+}
+
+/* --------------------------------------------------------------------------
+   Header — terminal prompt bar
+   -------------------------------------------------------------------------- */
+
+.headerContainer {
+	background: var(--surface);
+	border-bottom: 1px solid var(--border-bright);
+	box-shadow: 0 1px 0 var(--green-glow);
+}
+
+.headerTable {
+	width: 100%;
+	height: 52px;
+	border-spacing: 0;
+}
+
+body .headerTable {
+	border-bottom: none;
+	color: var(--text-muted);
+}
+
+body .header {
+	color: var(--text-muted);
+	font-family: var(--font-mono);
+	font-size: 0.78em;
+}
+
+body .header a:link,
+.header a:visited {
+	color: var(--text-muted);
+}
+
+.feedlink {
+	font-weight: normal;
+	font-family: var(--font-mono);
+	font-size: 0.78em;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Prefix the feed name with a shell prompt */
+.feedlink::before {
+	content: 'user@nnw:~$ cat ';
+	color: var(--green-dim);
+}
+
+.feedlink a:link,
+.feedlink a:visited {
+	color: var(--green);
+	text-shadow: var(--glow-text);
+}
+
+.feedlink a:hover {
+	color: #fff;
+	text-shadow: var(--glow-strong);
+}
+
+.avatar img,
+.feedIcon {
+	border-radius: 0;
+	border: 1px solid var(--border-bright);
+	box-shadow: 0 0 6px var(--green-glow);
+	image-rendering: pixelated;
+	filter: saturate(0) brightness(0.8) sepia(1) hue-rotate(90deg) saturate(2);
+	transition: filter 0.2s, box-shadow 0.2s;
+}
+
+.avatar img:hover,
+.feedIcon:hover {
+	filter: saturate(0) brightness(1) sepia(1) hue-rotate(90deg) saturate(3);
+	box-shadow: 0 0 12px var(--green-glow);
+}
+
+.rightAlign { text-align: end; }
+.leftAlign  { text-align: start; }
+
+/* --------------------------------------------------------------------------
+   Article chrome
+   -------------------------------------------------------------------------- */
+
+article {
+	animation: bootIn 0.5s 0.2s ease-out both;
+}
+
+.articleTitle {
+	margin-top: 32px;
+	border-left: 3px solid var(--green);
+	padding-left: 12px;
+}
+
+.articleTitle h1 {
+	font-size: 1.3rem;
+	line-height: 1.25;
+	font-weight: normal;
+	font-family: var(--font-mono);
+	margin-bottom: 0;
+	padding-bottom: 0;
+	text-shadow: var(--glow-text);
+	letter-spacing: -0.01em;
+}
+
+.articleTitle a:link,
+.articleTitle a:visited {
+	color: var(--green);
+	text-shadow: var(--glow-text);
+}
+
+.articleTitle a:hover {
+	color: #fff;
+	text-shadow: var(--glow-strong);
+}
+
+/* Blinking cursor after the title */
+.articleTitle h1::after {
+	content: '█';
+	display: inline-block;
+	margin-left: 4px;
+	font-size: 0.85em;
+	color: var(--green);
+	text-shadow: var(--glow-text);
+	animation: blink 1s step-end infinite;
+}
+
+.articleDateline {
+	margin-top: 8px;
+	margin-bottom: 8px;
+	font-weight: normal;
+	font-variant-caps: normal;
+	letter-spacing: 0;
+	font-family: var(--font-mono);
+	font-size: 0.8em;
+	color: var(--text-muted);
+}
+
+.articleDateline::before {
+	content: '# timestamp: ';
+	color: var(--green-dim);
+}
+
+.articleDateline a:link,
+.articleDateline a:visited {
+	color: var(--text-muted);
+}
+
+.articleDateline a:hover {
+	color: var(--green);
+}
+
+.articleDatelineTitle {
+	margin-bottom: 5px;
+	font-weight: normal;
+	font-variant-caps: normal;
+	font-family: var(--font-mono);
+	font-size: 0.8em;
+}
+
+.articleDatelineTitle::before {
+	content: '# timestamp: ';
+	color: var(--green-dim);
+}
+
+.articleDatelineTitle a:link,
+.articleDatelineTitle a:visited {
+	color: var(--text-muted);
+}
+
+.externalLink {
+	margin-top: 6px;
+	margin-bottom: 16px;
+	font-size: 0.78em;
+	font-style: normal;
+	color: var(--text-muted);
+	font-family: var(--font-mono);
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.externalLink::before {
+	content: '# source: ';
+	color: var(--green-dim);
+}
+
+.externalLink:has(a[href=""]) {
+	display: none;
+}
+
+.externalLink a {
+	font-family: var(--font-mono);
+	font-size: 1em;
+	font-variant-caps: normal;
+	letter-spacing: 0;
+	color: var(--text-muted);
+}
+
+.externalLink a:hover {
+	color: var(--green);
+}
+
+/* Separator before article body */
+.articleBody::before {
+	content: '─────────────────────────────────────────────────────────';
+	display: block;
+	color: var(--border-bright);
+	font-size: 0.7em;
+	margin-bottom: 16px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Article body
+   -------------------------------------------------------------------------- */
+
+.articleBody {
+	margin-top: 20px;
+	line-height: 1.7;
+	font-size: 0.95em;
+	font-family: var(--font-mono);
+}
+
+.articleBody a {
+	color: var(--green);
+	text-decoration: underline;
+	text-decoration-color: var(--green-dim);
+	text-underline-offset: 2px;
+	transition: color 0.15s, text-shadow 0.15s;
+}
+
+.articleBody a:hover {
+	color: #fff;
+	text-shadow: var(--glow-strong);
+	text-decoration-color: #fff;
+}
+
+.articleBody a:has(img),
+.articleBody a:has(img):link,
+.articleBody a:has(img):visited {
+	text-decoration: none;
+}
+
+h1 {
+	line-height: 1.2;
+	font-weight: normal;
+	padding-bottom: 0;
+	margin-bottom: 5px;
+	font-family: var(--font-mono);
+	color: var(--green);
+	text-shadow: var(--glow-text);
+}
+
+h2, h3, h4, h5, h6 {
+	font-family: var(--font-mono);
+	font-weight: normal;
+	color: var(--green);
+	text-shadow: var(--glow-text);
+}
+
+h2::before { content: '## '; color: var(--green-dim); }
+h3::before { content: '### '; color: var(--green-dim); }
+h4::before { content: '#### '; color: var(--green-dim); }
+
+p { margin: 0.8em 0; }
+
+/* --------------------------------------------------------------------------
+   Blockquotes
+   -------------------------------------------------------------------------- */
+
+blockquote {
+	margin-inline: 0;
+	padding: 10px 16px;
+	border-inline-start: 2px solid var(--green-dim);
+	background: var(--green-faint);
+	border-radius: 0;
+	font-style: normal;
+	color: var(--text-muted);
+	position: relative;
+}
+
+
+/* --------------------------------------------------------------------------
+   Code
+   -------------------------------------------------------------------------- */
+
+body code,
+body pre {
+	color: var(--green);
+}
+
+code, pre {
+	font-family: var(--font-mono);
+	font-size: 0.9em;
+	background: #030803;
+	-webkit-hyphens: none;
+	color: var(--green);
+}
+
+code {
+	padding: 1px 5px;
+	border-radius: 0;
+	border: 1px solid var(--border);
+	color: var(--amber);
+	text-shadow: 0 0 6px rgba(255,179,71,0.5);
+}
+
+pre {
+	max-width: 100%;
+	margin: 0;
+	overflow: auto;
+	overflow-y: hidden;
+	word-wrap: normal;
+	word-break: normal;
+	border-radius: 0;
+	border: 1px solid var(--border-bright);
+	line-height: 1.5;
+	box-shadow: 0 0 12px rgba(57,255,110,0.07), inset 0 0 20px rgba(0,0,0,0.4);
+	position: relative;
+}
+
+/* fake terminal title bar on code blocks */
+pre::before {
+	content: '● ● ●  output';
+	display: block;
+	background: var(--border);
+	color: var(--text-muted);
+	font-size: 0.72em;
+	padding: 4px 10px;
+	letter-spacing: 0.05em;
+	border-bottom: 1px solid var(--border-bright);
+	margin-bottom: 2px;
+}
+
+pre code {
+	border: none;
+	background: transparent;
+	color: var(--green);
+	text-shadow: 0 0 4px rgba(57,255,110,0.3);
+	letter-spacing: -0.027em;
+	font-size: 0.9375em;
+}
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+
+.nnw-overflow {
+	overflow-x: auto;
+	border: 1px solid var(--border-bright);
+}
+
+.nnw-overflow table {
+	margin-bottom: 1px;
+	border-spacing: 0;
+	font-size: inherit;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.nnw-overflow table table {
+	margin-bottom: 0;
+	border: none;
+}
+
+.nnw-overflow td,
+.nnw-overflow th {
+	-webkit-hyphens: none;
+	word-break: normal;
+	border-bottom: 1px solid var(--border);
+	padding: 7px 12px;
+	text-align: left;
+}
+
+.nnw-overflow th {
+	font-size: 0.78em;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--green);
+	text-shadow: var(--glow-text);
+	background: var(--green-faint);
+	border-bottom: 1px solid var(--border-bright);
+}
+
+.nnw-overflow tr:last-child td {
+	border-bottom: none;
+}
+
+.nnw-overflow tr:hover td {
+	background: var(--green-faint);
+}
+
+.nnw-overflow td pre {
+	border: none;
+	padding: 0;
+}
+
+.nnw-overflow table[border="0"] {
+	border-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Media
+   -------------------------------------------------------------------------- */
+
+img, figure, video, object {
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+/* Maintain aspect ratio for block-level media */
+img:not([height]),
+figure,
+video,
+object {
+	height: auto;
+}
+
+/* Images with no width OR height attributes inside running text are
+   inline icons — clamp them to the current line height */
+.articleBody p img:not([width]):not([height]),
+.articleBody li img:not([width]):not([height]),
+.articleBody td img:not([width]):not([height]) {
+	height: 1em;
+	width: auto;
+	vertical-align: middle;
+}
+
+
+img {
+	border: none;
+	filter: saturate(0.4) brightness(0.85) contrast(1.1);
+	transition: filter 0.3s;
+}
+
+img:hover {
+	filter: saturate(0.6) brightness(0.95) contrast(1.1);
+}
+
+iframe {
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+iframe.nnw-constrained {
+	max-height: 50vw;
+}
+
+figure {
+	margin-bottom: 1.5em;
+	margin-top: 1.5em;
+}
+
+figcaption {
+	margin-top: 0.4em;
+	font-size: 0.78em;
+	line-height: 1.4;
+	color: var(--text-muted);
+	font-family: var(--font-mono);
+	text-align: left;
+}
+
+figcaption::before {
+	content: '// ';
+	color: var(--green-dim);
+}
+
+/* --------------------------------------------------------------------------
+   Misc inline
+   -------------------------------------------------------------------------- */
+
+sup {
+	vertical-align: top;
+	position: relative;
+	bottom: 0.2rem;
+}
+
+sub {
+	vertical-align: bottom;
+	position: relative;
+	top: 0.2rem;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid var(--border-bright);
+	margin: 2em 0;
+	box-shadow: 0 0 4px var(--green-glow);
+}
+
+.iframeWrap {
+	position: relative;
+	display: block;
+	padding-top: 56.25%;
+}
+
+.iframeWrap iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100% !important;
+	width: 100% !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   System message
+   -------------------------------------------------------------------------- */
+
+.systemMessage {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-user-select: none;
+	cursor: default;
+	color: var(--text-muted);
+	font-family: var(--font-mono);
+	font-size: 0.85em;
+}
+
+body > .systemMessage {
+	color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Newsfoot footnotes
+   -------------------------------------------------------------------------- */
+
+.newsfoot-footnote-popover {
+	background: #0d130d;
+	box-shadow: 0 0 12px rgba(57,255,110,0.3);
+	color: var(--text);
+	padding: 1px;
+	border: 1px solid var(--border-bright);
+}
+
+.newsfoot-footnote-popover-arrow {
+	background: #0d130d;
+	border: 1px solid var(--border-bright);
+}
+
+.newsfoot-footnote-popover-inner {
+	background: #0d130d;
+}
+
+body a.footnote,
+body a.footnote:visited,
+.newsfoot-footnote-popover + a.footnote:hover {
+	background: var(--green-dim);
+	color: #000;
+	transition: background-color 200ms ease-out;
+}
+
+a.footnote:hover,
+.newsfoot-footnote-popover + a.footnote {
+	background: var(--green);
+	color: #000;
+	text-shadow: none;
+	transition: background-color 200ms ease-out;
+}
+
+/* --------------------------------------------------------------------------
+   Feed-specific
+   -------------------------------------------------------------------------- */
+
+.feedbin--article-wrap {
+	border-top: 1px solid var(--border-bright);
+}
+
+/* --------------------------------------------------------------------------
+   iOS Specific
+   -------------------------------------------------------------------------- */
+
+@supports (-webkit-touch-callout: none) {
+
+	body {
+		margin-top: 3px;
+		margin-bottom: 20px;
+		padding-left: 16px;
+		padding-right: 16px;
+		word-break: break-word;
+		-webkit-hyphens: auto;
+		-webkit-text-size-adjust: none;
+		font-family: var(--font-mono);
+	}
+
+	:root {
+		font: -apple-system-body;
+		font-size: [[font-size]]px;
+	}
+
+	body a,
+	body a:visited,
+	body a * {
+		color: var(--green);
+	}
+
+	.externalLink a {
+		font-size: inherit;
+	}
+
+	.articleBody a:link,
+	.articleBody a:visited {
+		text-decoration: underline;
+		text-decoration-color: var(--green-dim);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 2px;
+		color: var(--green);
+	}
+
+	.articleBody sup a:link,
+	.articleBody sup a:visited {
+		text-decoration: none;
+		color: var(--green);
+	}
+
+	sup .newsfoot-footnote-popover a:link,
+	sup .newsfoot-footnote-popover a:visited {
+		text-decoration: underline;
+		text-decoration-color: var(--green-dim);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 2px;
+		color: var(--green);
+	}
+
+	body .header {
+		font: -apple-system-body;
+		font-size: [[font-size]]px;
+		font-family: var(--font-mono);
+	}
+
+	body .header a:link,
+	body .header a:visited {
+		color: var(--green);
+	}
+
+	.articleBody a:hover {
+		background: var(--green-faint);
+	}
+
+	pre {
+		padding: 5px;
+	}
+
+}
+
+/* --------------------------------------------------------------------------
+   macOS Specific
+   -------------------------------------------------------------------------- */
+
+@supports not (-webkit-touch-callout: none) {
+
+	body {
+		margin-top: 20px;
+		margin-bottom: 64px;
+		padding-left: 48px;
+		padding-right: 48px;
+		font-family: var(--font-mono);
+	}
+
+	.smallText   { font-size: 12px; }
+	.mediumText  { font-size: 13px; }
+	.largeText   { font-size: 14px; }
+	.xlargeText  { font-size: 15px; }
+	.xxlargeText { font-size: 16px; }
+
+	body a,
+	body a:visited,
+	body a * {
+		color: var(--green);
+	}
+
+	a u {
+		text-decoration: none;
+	}
+
+	.articleTitle h1 {
+		font-size: 1.4rem;
+	}
+
+	.articleBody a:link,
+	.articleBody a:visited {
+		color: var(--green);
+	}
+
+	.articleBody a:has(img),
+	.articleBody a:has(img):link,
+	.articleBody a:has(img):visited {
+		text-decoration: none;
+	}
+
+	.articleBody a:has(img):hover {
+		background: none;
+		color: inherit;
+		text-shadow: none;
+	}
+
+	.articleBody a:hover u {
+		color: #fff;
+	}
+
+	pre {
+		padding: 0;
+	}
+
+	pre code {
+		display: block;
+		padding: 10px 14px;
+	}
+
+}
