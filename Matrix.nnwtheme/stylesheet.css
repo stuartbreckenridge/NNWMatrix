@@ -523,7 +523,7 @@ img, figure, video, object {
 }
 
 /* Maintain aspect ratio for block-level media */
-img:not([height]),
+img,
 figure,
 video,
 object {
